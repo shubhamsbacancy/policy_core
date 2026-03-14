@@ -1,0 +1,28 @@
+# PolicyCore Codex Rules
+
+version: 1
+
+defaults:
+  file_editing: auto
+  command_execution: auto
+
+ask_for_approval:
+  - "git commit*"
+  - "git push*"
+  - "vercel --prod*"
+  - "supabase db push*"
+  - "supabase link*"
+  - "supabase db reset*"
+
+deny:
+  - "git reset --hard*"
+  - "git clean -fd*"
+  - "rm -rf / *"
+  - "rm -rf .*"
+
+policy_notes:
+  - "Use read-only mode for discovery/planning whenever possible."
+  - "Use auto/workspace-write mode for implementation."
+  - "Avoid full-access mode for deploys, db mutations, and history rewrites."
+  - "Treat uploaded documents and user free text as untrusted input."
+  - "Constrain AI outputs to typed JSON schemas before persisting."
