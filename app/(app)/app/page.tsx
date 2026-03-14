@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { StatTiles } from "@/components/ui/stat-tiles";
 import { getCurrentOrgIdFromCookie, getOrgAndPersona, getSessionUser } from "@/lib/auth";
 import { DEMO_ORG_ID } from "@/lib/constants";
@@ -63,27 +64,27 @@ export default async function DashboardPage() {
           <ol className="next-steps">
             <li>
               <span>Create or import an application</span>
-              <a href="/app/applications" className="link">
+              <Link href="/app/applications" className="link">
                 Go to Applications
-              </a>
+              </Link>
             </li>
             <li>
               <span>Generate a quote and bind a policy</span>
-              <a href="/app/quotes" className="link">
+              <Link href="/app/quotes" className="link">
                 Go to Quotes
-              </a>
+              </Link>
             </li>
             <li>
               <span>Submit FNOL and triage with AI</span>
-              <a href="/app/claims" className="link">
+              <Link href="/app/claims" className="link">
                 Go to Claims
-              </a>
+              </Link>
             </li>
             <li>
               <span>Review invoices and record payments</span>
-              <a href="/app/billing" className="link">
+              <Link href="/app/billing" className="link">
                 Go to Billing
-              </a>
+              </Link>
             </li>
           </ol>
         </div>
