@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
 
 import { getCurrentOrgIdFromCookie } from "@/lib/auth/org-cookie";
 import { getSessionUser } from "@/lib/auth/session";
+import { repoListQuotes } from "@/lib/domain/repository";
 
 type QuoteListItem = {
   quote_id: string;
@@ -15,23 +15,11 @@ type QuoteListItem = {
   created_at: string;
 };
 
-async function fetchQuotes(orgId: string): Promise<QuoteListItem[]> {
-  const cookieStore = await cookies();
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  const res = await fetch(`${base}/api/v1/quotes?org_id=${orgId}`, {
-    cache: "no-store",
-    headers: { cookie: cookieStore.toString() }
-  });
-  if (!res.ok) return [];
-  const json = await res.json();
-  return json.data ?? json ?? [];
-}
-
 export default async function QuotesPage() {
   const user = await getSessionUser();
   if (!user) return null;
   const orgId = (await getCurrentOrgIdFromCookie()) ?? "";
-  const quotes = orgId ? await fetchQuotes(orgId) : [];
+  const quotes = orgId ? ((await repoListQuotes(orgId)) as QuoteListItem[]) : [];
 
   return (
     <div className="page">

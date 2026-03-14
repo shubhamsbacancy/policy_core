@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { StatTiles } from "@/components/ui/stat-tiles";
 import { getCurrentOrgIdFromCookie, getOrgAndPersona, getSessionUser } from "@/lib/auth";
 import { DEMO_ORG_ID } from "@/lib/constants";
@@ -34,60 +33,24 @@ export default async function DashboardPage() {
         </div>
       </div>
       <StatTiles items={stats} />
-      <div className="grid-2">
-        <div className="panel">
-          <div className="panel-head">
-            <div>
-              <p className="eyebrow">Premium</p>
-              <h3>Written vs Paid</h3>
-            </div>
+      <div className="panel">
+        <div className="panel-head">
+          <div>
+            <p className="eyebrow">Premium</p>
+            <h3>Written vs Paid</h3>
           </div>
-          <ul className="totals-list">
-            {totals.map((t) => (
-              <li key={t.label}>
-                <div>
-                  <p className="hint">{t.label}</p>
-                  <p className="metric">${t.value.toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>
-                </div>
-                <span className="badge subtle">{t.suffix}</span>
-              </li>
-            ))}
-          </ul>
         </div>
-        <div className="panel">
-          <div className="panel-head">
-            <div>
-              <p className="eyebrow">Next steps</p>
-              <h3>Workflow links</h3>
-            </div>
-          </div>
-          <ol className="next-steps">
-            <li>
-              <span>Create or import an application</span>
-              <Link href="/app/applications" className="link">
-                Go to Applications
-              </Link>
+        <ul className="totals-list">
+          {totals.map((t) => (
+            <li key={t.label}>
+              <div>
+                <p className="hint">{t.label}</p>
+                <p className="metric">${t.value.toLocaleString(undefined, { minimumFractionDigits: 2 })}</p>
+              </div>
+              <span className="badge subtle">{t.suffix}</span>
             </li>
-            <li>
-              <span>Generate a quote and bind a policy</span>
-              <Link href="/app/quotes" className="link">
-                Go to Quotes
-              </Link>
-            </li>
-            <li>
-              <span>Submit FNOL and triage with AI</span>
-              <Link href="/app/claims" className="link">
-                Go to Claims
-              </Link>
-            </li>
-            <li>
-              <span>Review invoices and record payments</span>
-              <Link href="/app/billing" className="link">
-                Go to Billing
-              </Link>
-            </li>
-          </ol>
-        </div>
+          ))}
+        </ul>
       </div>
     </div>
   );

@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { cookies } from "next/headers";
 
 import { getCurrentOrgIdFromCookie } from "@/lib/auth/org-cookie";
 import { getSessionUser } from "@/lib/auth/session";
+import { repoListPolicies } from "@/lib/domain/repository";
 
 type PolicyListItem = {
   policy_id: string;
@@ -13,23 +13,11 @@ type PolicyListItem = {
   created_at: string;
 };
 
-async function fetchPolicies(orgId: string): Promise<PolicyListItem[]> {
-  const cookieStore = await cookies();
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  const res = await fetch(`${base}/api/v1/customer/policies?org_id=${orgId}`, {
-    cache: "no-store",
-    headers: { cookie: cookieStore.toString() }
-  });
-  if (!res.ok) return [];
-  const json = await res.json();
-  return json.data ?? json ?? [];
-}
-
 export default async function PoliciesPage() {
   const user = await getSessionUser();
   if (!user) return null;
   const orgId = (await getCurrentOrgIdFromCookie()) ?? "";
-  const policies = orgId ? await fetchPolicies(orgId) : [];
+  const policies = orgId ? ((await repoListPolicies(orgId)) as PolicyListItem[]) : [];
 
   return (
     <div className="page">

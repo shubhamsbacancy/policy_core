@@ -1,9 +1,8 @@
 import Link from "next/link";
 
 import { getCurrentOrgIdFromCookie } from "@/lib/auth/org-cookie";
-import { cookies } from "next/headers";
-
 import { getSessionUser } from "@/lib/auth/session";
+import { repoListApplications } from "@/lib/domain/repository";
 
 type ApplicationListItem = {
   id: string;
@@ -14,27 +13,13 @@ type ApplicationListItem = {
   property?: { city: string; state: string };
 };
 
-async function fetchApplications(orgId: string): Promise<ApplicationListItem[]> {
-  const cookieStore = await cookies();
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  const res = await fetch(`${base}/api/v1/applications?org_id=${orgId}`, {
-    cache: "no-store",
-    headers: {
-      cookie: cookieStore.toString()
-    }
-  });
-  if (!res.ok) return [];
-  const json = await res.json();
-  return json.data ?? json ?? [];
-}
-
 export default async function ApplicationsPage() {
   const user = await getSessionUser();
   if (!user) {
     return null;
   }
   const orgId = (await getCurrentOrgIdFromCookie()) ?? "";
-  const apps = orgId ? await fetchApplications(orgId) : [];
+  const apps = orgId ? ((await repoListApplications(orgId)) as ApplicationListItem[]) : [];
 
   return (
     <div className="page">
